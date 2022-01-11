@@ -1,0 +1,23 @@
+/* 
+    Document   : login
+    Created on : May 31, 2020, 11:45:25 AM
+    Author     : Saloni
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap');
+
+*{
+	font-family: 'Josefin Sans', sans-serif;
+}
+
+.bolded{
+	font-weight: 700;
+}
+  
+

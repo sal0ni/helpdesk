@@ -1,0 +1,192 @@
+Online Help Desk
+
+Important Tasks
+================
+Customer Registration
+Customer login
+Change password
+Forgot password
+Adding an issue
+Displaying an issue
+Searching for issues
+Replying to an issue
+
+1. Customer Registraion
+
+Take the following details from customer
+
+Username  used for login
+Password
+Confirm password
+product type
+serial no
+date of purchase 
+date or registration
+
+
+CUSTOMERS Table
+---------------
+customerid  - pk
+loginname
+password
+reg_date
+email
+serialno
+purchase_date
+
+
+2.  Login By Customer
+
+Take the following details from customer
+
+loginname
+password
+
+Use Customers tabel for validation
+
+3. Change password
+
+Take   old password, new password, and confirm password and change password in Customers Table
+
+
+4. Adding an issue
+
+Take the following details from customer
+
+Title for issue
+Issue Text
+
+ISSUES Table
+-------------
+issueid
+customerid
+issuetitle
+issuedescription
+postedon
+status 
+resolvedon
+supportpersonid
+
+
+5. Customer searching for posting 
+
+Take product type, search text , range of date for posting and display all the posted that match the given details.
+
+6. Customer replying to  a post
+
+Take the following details from customer
+
+Reply text.
+
+IssueResponses Table
+-------------
+IRId
+Issueid
+IRTitle
+IRDescription
+Postedon
+Postedby
+
+
+7. When customer selects an issue then display details of that issue
+
+Take details from ISSUES and REPLIES tables.
+
+
+8. Forgot Password
+
+Take email adddress of the customer and send mail with password to that email address.
+
+
+
+Structure
+=========
+
+Issue 
+    issueid, text, title, postedon, postedby, status, statuschangedon
+
+Reply
+    issueid, text, repliedon, repliedby
+
+CustomerDAO
+    int login(un,pwd)
+    String   register(un,pwd,email,prodtype,serialno,purchasedate)
+    String  changePassword(un, oldpwd, newpwd)
+    String  forgotPassword(email)
+
+
+IssueDAO
+    String  addIssue(custid,title,text)
+    List<Issue> searchIssues( prodtype, text, stdate,enddate)
+    Issue  getIssue(issueid)
+    List<Replies> getReplies(issuedid)
+    String  addReply(issueid,replytext,replyby) 
+   
+
+
+Tables   DDL Commands
+
+create user helpdesk identified by helpdesk;
+grant connect, resource to helpdesk;
+
+create table customers
+(customerid   number(5) primary key,
+loginname varchar(20)  unique,
+password varchar(10),
+reg_date  date,
+email   varchar(50) unique,
+serialno  varchar(50) unique
+);
+
+create table Issues
+(Issueid  number(5) primary key,
+customerid number(5) references customers(customerid),
+issuetitle  varchar(100),
+issuedescription  varchar(2000),
+postedon  date,
+status  char(1),
+resolvedon  date,
+supportperson  varchar(20)
+);
+
+
+
+create table IssueResponses
+( IRId number(5) primary key,
+Issueid  number(5) references issues(issueid),
+IRTitle  varchar(100),
+IRDescription varchar(2000),
+Postedon date,
+Postedby  varchar(20)
+);
+
+insert into customers 
+  values(1,'steve','steve','12-mar-08',
+         'steve@gmail.com','22323232');
+
+insert into customers 
+  values(2,'bill','bill','15-mar-08',
+         'bill@yahoo.com','13121212');
+
+
+
+insert into issues values(1000,1,'Problem With Scanner','I am unable to connect my Scanner to LapTop','1-apr-08','c','5-apr-08','Bob');
+insert into issues values(1001,2,'Unable to charge battery','When i connect AC to my Laptop, it says connected but not charging. What does it mean?','2-apr-08','o',null,null);
+
+    
+
+create sequence  customerid start with 1 increment by 1 nocache;
+create sequence  issueid start with 100 increment by 1 nocache;
+create sequence  irid start with 100 increment by 1 nocache;
+
+
+insert into issueResponses 
+   values(1,1001,'Re: Unable to charge batter','Please check whether power card is damanaged','2-apr-08','Kevin');
+   
+   
+insert into issueResponses 
+   values(2,1001,'Unable to charge batter','I have checked by using another powercard. But it is the same','2-apr-08','bill');
+
+insert into issueResponses 
+   values(3,1000,'Re: Problem with sanner','Please use proper drivers. Download drivers for Vista at abcsupport.com','4-apr-08','Bob');
+   
